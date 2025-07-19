@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Shop Page Layout Override -->
+    <template id="products" inherit_id="website_sale.products" name="Trading Theme Shop">
+        <!-- Customize shop header -->
+        <xpath expr="//div[@id='products_grid_before']" position="before">
+            <div class="trading-shop-header bg-primary text-white py-4 mb-4">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <h1 class="display-4 mb-2">Trading Products</h1>
+                            <p class="lead">Professional trading tools and equipment</p>
+                        </div>
+                        <div class="col-lg-4 text-end">
+                            <div class="trading-stats">
+                                <span class="badge bg-light text-dark me-2">
+                                    <i class="fa fa-boxes me-1"></i>
+                                    <span t-esc="len(products)"/>
+ Products
+                                </span>
+                                <span class="badge bg-light text-dark">
+                                    <i class="fa fa-tags me-1"></i>
+                                    Best Prices
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+
+        <!-- Customize product grid -->
+        <xpath expr="//div[@id='products_grid']" position="attributes">
+            <attribute name="class">container-fluid trading-products-grid</attribute>
+        </xpath>
+
+        <!-- Add custom sidebar -->
+        <xpath expr="//div[@id='products_grid']" position="before">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-3 d-none d-lg-block">
+                        <div class="trading-sidebar bg-light p-4 rounded">
+                            <h4>Quick Filters</h4>
+                            <div class="mb-3">
+                                <label class="form-label">Price Range</label>
+                                <input type="range" class="form-range" min="0" max="1000"/>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Trading Type</label>
+                                <select class="form-select">
+                                    <option>All Types</option>
+                                    <option>Forex</option>
+                                    <option>Stocks</option>
+                                    <option>Crypto</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary w-100">Apply Filters</button>
+                        </div>
+                    </div>
+                    <div class="col-lg-9">
+                    </xpath>
+
+                    <!-- Close the custom layout -->
+                    <xpath expr="//div[@id='products_grid']" position="after">
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- Product Card Customization -->
+    <template id="products_item" inherit_id="website_sale.products_item" name="Trading Product Card">
+        <!-- Add trading-specific badges -->
+        <xpath expr="//div[hasclass('o_wsale_product_information')]" position="before">
+            <div class="trading-badges position-absolute" style="top: 10px; left: 10px; z-index: 1;">
+                <span class="badge bg-success" t-if="product.website_published">Live</span>
+                <span class="badge bg-warning" t-if="product.is_published and not product.website_published">Coming Soon</span>
+            </div>
+        </xpath>
+
+        <!-- Customize product info -->
+        <xpath expr="//div[hasclass('o_wsale_product_information')]" position="replace">
+            <div class="o_wsale_product_information p-3 bg-white">
+                <h6 class="text-primary text-uppercase small mb-1" t-field="product.categ_id.name"/>
+                <h5 class="card-title mb-2">
+                    <a t-attf-href="/shop/product/#{ slug(product) }" class="text-decoration-none text-dark">
+                        <span t-field="product.name"/>
+                    </a>
+                </h5>
+
+                <!-- Trading-specific info -->
+                <div class="trading-info mb-2">
+                    <div class="row text-center">
+                        <div class="col-4">
+                            <small class="text-muted">Min Trade</small>
+                            <div class="fw-bold">$100</div>
+                        </div>
+                        <div class="col-4">
+                            <small class="text-muted">Spread</small>
+                            <div class="fw-bold text-success">0.1</div>
+                        </div>
+                        <div class="col-4">
+                            <small class="text-muted">Leverage</small>
+                            <div class="fw-bold text-primary">1:500</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Price display -->
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="pricing">
+                        <span class="h5 text-primary mb-0" t-field="product.list_price" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                        <small class="text-muted">/month</small>
+                    </div>
+                    <button class="btn btn-outline-primary btn-sm">
+                        <i class="fa fa-chart-line me-1"></i>Trade Now
+                    </button>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

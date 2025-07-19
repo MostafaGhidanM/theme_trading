@@ -1,0 +1,99 @@
+// Trading Theme Custom Styles
+
+// Variables
+$trading-primary: #1e3a8a;
+$trading-secondary: #f59e0b;
+$trading-success: #10b981;
+$trading-danger: #ef4444;
+
+// Hero Section
+.trading-hero {
+    background: linear-gradient(135deg, $trading-primary 0%, #3b82f6 100%);
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('/theme_trading/static/src/img/chart-pattern.png') repeat;
+        opacity: 0.1;
+    }
+}
+
+// Feature Cards
+.feature-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+}
+
+// Trading Products Grid
+.trading-products-grid {
+    .o_wsale_products_grid_table_wrapper {
+        .table {
+            border: none;
+
+            .oe_product {
+                border: 1px solid #e5e7eb;
+                border-radius: 12px;
+                overflow: hidden;
+                transition: all 0.3s ease;
+
+                &:hover {
+                    transform: translateY(-3px);
+                    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+                    border-color: $trading-primary;
+                }
+            }
+        }
+    }
+}
+
+// Trading Sidebar
+.trading-sidebar {
+    position: sticky;
+    top: 100px;
+    border: 1px solid #e5e7eb;
+
+    .form-range {
+        accent-color: $trading-primary;
+    }
+}
+
+// Product Badges
+.trading-badges {
+    .badge {
+        font-size: 0.75rem;
+        padding: 0.375rem 0.75rem;
+    }
+}
+
+// Trading Info Cards
+.trading-info {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 0.75rem;
+}
+
+// Responsive
+@media (max-width: 768px) {
+    .trading-hero {
+        .display-3 {
+            font-size: 2.5rem;
+        }
+    }
+
+    .trading-stats {
+        margin-top: 2rem !important;
+    }
+}

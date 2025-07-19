@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Product Page Customizations for Trading Theme -->
+
+    <!-- Product Detail Page Override -->
+    <template id="product_detail_trading" inherit_id="website_sale.product" name="Trading Product Detail">
+        <!-- Custom product header -->
+        <xpath expr="//div[@id='product_detail']" position="before">
+            <div class="trading-product-header bg-gradient-primary text-white py-3">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb mb-2 text-white-50">
+                                    <li class="breadcrumb-item">
+                                        <a href="/" class="text-white">Home</a>
+                                    </li>
+                                    <li class="breadcrumb-item">
+                                        <a href="/shop" class="text-white">Trading</a>
+                                    </li>
+                                    <li class="breadcrumb-item active text-white" t-field="product.categ_id.name"/>
+                                </ol>
+                            </nav>
+                            <h1 class="h3 mb-0 text-white" t-field="product.name"/>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <div class="trading-status">
+                                <span class="badge bg-success me-2" t-if="product.website_published">
+                                    <i class="fa fa-circle me-1"></i>Live Trading
+                                </span>
+                                <span class="badge bg-warning" t-if="not product.website_published">
+                                    <i class="fa fa-clock me-1"></i>Coming Soon
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+
+        <!-- Enhanced product images with gallery -->
+        <xpath expr="//div[@id='o-carousel-product']" position="replace">
+            <div class="trading-product-gallery">
+                <div id="productImageCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner rounded">
+                        <!-- Main product image -->
+                        <div class="carousel-item active">
+                            <img class="d-block w-100 product-main-image" t-att-src="website.image_url(product, 'image_1920')" t-att-alt="product.name" style="height: 400px; object-fit: cover;"/>
+                        </div>
+
+                        <!-- Additional product images -->
+                        <t t-foreach="product.product_template_image_ids" t-as="image">
+                            <div class="carousel-item">
+                                <img class="d-block w-100 product-gallery-image" t-att-src="website.image_url(image, 'image_1920')" t-att-alt="product.name" style="height: 400px; object-fit: cover;"/>
+                            </div>
+                        </t>
+                    </div>
+
+                    <!-- Carousel controls -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#productImageCarousel" data-bs-slide="prev" t-if="len(product.product_template_image_ids) > 0">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#productImageCarousel" data-bs-slide="next" t-if="len(product.product_template_image_ids) > 0">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                </div>
+
+                <!-- Thumbnail gallery -->
+                <div class="product-thumbnails mt-3" t-if="len(product.product_template_image_ids) > 0">
+                    <div class="row g-2">
+                        <!-- Main image thumbnail -->
+                        <div class="col-2">
+                            <img class="img-thumbnail gallery-thumb active" t-att-src="website.image_url(product, 'image_256')" data-bs-target="#productImageCarousel" data-bs-slide-to="0" style="cursor: pointer; height: 60px; object-fit: cover;"/>
+                        </div>
+
+                        <!-- Additional thumbnails -->
+                        <t t-foreach="product.product_template_image_ids" t-as="image">
+                            <div class="col-2">
+                                <img class="img-thumbnail gallery-thumb" t-att-src="website.image_url(image, 'image_256')" data-bs-target="#productImageCarousel" t-att-data-bs-slide-to="image_index + 1" style="cursor: pointer; height: 60px; object-fit: cover;"/>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+
+        <!-- Trading-specific product information -->
+        <xpath expr="//div[@id='product_details']" position="after">
+            <div class="trading-product-specs mt-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="fa fa-chart-line me-2"></i>Trading Specifications</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <table class="table table-borderless">
+                                    <tr>
+                                        <td>
+                                            <strong>Instrument Type:</strong>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-info" t-field="product.categ_id.name"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>Min. Trade Size:</strong>
+                                        </td>
+                                        <td>0.01 lots</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>Max. Leverage:</strong>
+                                        </td>
+                                        <td class="text-primary fw-bold">1:500</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>Spread From:</strong>
+                                        </td>
+                                        <td class="text-success fw-bold">0.1 pips</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <table class="table table-borderless">
+                                    <tr>
+                                        <td>
+                                            <strong>Commission:</strong>
+                                        </td>
+                                        <td class="text-success">$0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>Swap Free:</strong>
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-check text-success"></i> Available</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>Trading Hours:</strong>
+                                        </td>
+                                        <td>24/5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>Hedging:</strong>
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-check text-success"></i> Allowed</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+
+        <!-- Enhanced Add to Cart Section -->
+        <xpath expr="//form[@action='/shop/cart/update']" position="replace">
+            <div class="trading-action-panel">
+                <div class="card border-primary">
+                    <div class="card-header bg-light">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0 text-primary">Start Trading</h5>
+                            <div class="trading-price">
+                                <span class="h4 text-primary mb-0" t-field="product.list_price" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                                <small class="text-muted">/month</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form action="/shop/cart/update" method="POST" class="trading-form">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <input type="hidden" name="product_id" t-att-value="product.id"/>
+
+                            <!-- Account Type Selection -->
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Account Type</label>
+                                <div class="btn-group w-100" role="group">
+                                    <input type="radio" class="btn-check" name="account_type" id="demo" value="demo" checked="checked"/>
+                                    <label class="btn btn-outline-primary" for="demo">
+                                        <i class="fa fa-play me-1"></i>Demo Account
+                                    </label>
+
+                                    <input type="radio" class="btn-check" name="account_type" id="live" value="live"/>
+                                    <label class="btn btn-outline-success" for="live">
+                                        <i class="fa fa-dollar-sign me-1"></i>Live Account
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Platform Selection -->
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Trading Platform</label>
+                                <select class="form-select" name="platform">
+                                    <option value="mt4">MetaTrader 4</option>
+                                    <option value="mt5">MetaTrader 5</option>
+                                    <option value="web">Web Platform</option>
+                                </select>
+                            </div>
+
+                            <!-- Leverage Selection -->
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Leverage</label>
+                                <select class="form-select" name="leverage">
+                                    <option value="1:100">1:100</option>
+                                    <option value="1:200">1:200</option>
+                                    <option value="1:500" selected="selected">1:500</option>
+                                </select>
+                            </div>
+
+                            <!-- Action buttons -->
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fa fa-rocket me-2"></i>Start Trading Now
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary">
+                                    <i class="fa fa-download me-2"></i>Download Platform
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Additional info -->
+                        <div class="trading-benefits mt-3 pt-3 border-top">
+                            <div class="row text-center">
+                                <div class="col-4">
+                                    <i class="fa fa-shield-alt text-success mb-1 d-block"></i>
+                                    <small>Regulated</small>
+                                </div>
+                                <div class="col-4">
+                                    <i class="fa fa-bolt text-warning mb-1 d-block"></i>
+                                    <small>Fast Execution</small>
+                                </div>
+                                <div class="col-4">
+                                    <i class="fa fa-headset text-info mb-1 d-block"></i>
+                                    <small>24/7 Support</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+
+        <!-- Related Products Section -->
+        <xpath expr="//div[@id='product_full_description']" position="after">
+            <div class="related-trading-products mt-5">
+                <div class="container">
+                    <h3 class="text-center mb-4">Related Trading Instruments</h3>
+                    <div class="row">
+                        <t t-set="related_products" t-value="product.alternative_product_ids[:4] or product.categ_id.product_tmpl_ids[:4]"/>
+                        <t t-foreach="related_products" t-as="related_product">
+                            <div class="col-md-3 col-sm-6 mb-4" t-if="related_product.id != product.id">
+                                <div class="card h-100 border-0 shadow-sm">
+                                    <div class="position-relative">
+                                        <img class="card-img-top" t-att-src="website.image_url(related_product, 'image_512')" t-att-alt="related_product.name" style="height: 150px; object-fit: cover;"/>
+                                        <span class="badge bg-primary position-absolute top-0 end-0 m-2">
+                                            <span t-field="related_product.categ_id.name"/>
+                                        </span>
+                                    </div>
+                                    <div class="card-body d-flex flex-column">
+                                        <h6 class="card-title" t-field="related_product.name"/>
+                                        <div class="mt-auto">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="text-primary fw-bold" t-field="related_product.list_price" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                                                <a t-attf-href="/shop/product/#{slug(related_product)}" class="btn btn-outline-primary btn-sm">Trade</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- Product Comparison Template -->
+    <template id="product_compare_trading" inherit_id="website_sale.product_compare" name="Trading Product Compare">
+        <xpath expr="//table[@class='table table-striped table-sm table-hover']" position="attributes">
+            <attribute name="class">table table-striped table-sm table-hover trading-compare-table</attribute>
+        </xpath>
+
+        <!-- Add trading-specific comparison rows -->
+        <xpath expr="//tr[last()]" position="after">
+            <tr>
+                <th>Min. Trade Size</th>
+                <t t-foreach="products" t-as="product">
+                    <td>0.01 lots</td>
+                </t>
+            </tr>
+            <tr>
+                <th>Max. Leverage</th>
+                <t t-foreach="products" t-as="product">
+                    <td class="text-primary fw-bold">1:500</td>
+                </t>
+            </tr>
+            <tr>
+                <th>Spread From</th>
+                <t t-foreach="products" t-as="product">
+                    <td class="text-success fw-bold">0.1 pips</td>
+                </t>
+            </tr>
+            <tr>
+                <th>Trading Hours</th>
+                <t t-foreach="products" t-as="product">
+                    <td>24/5</td>
+                </t>
+            </tr>
+        </xpath>
+    </template>
+
+    <!-- Product Card in Grid (for shop page) -->
+    <template id="products_item_trading" inherit_id="website_sale.products_item" name="Trading Product Card">
+        <!-- Add trading badges -->
+        <xpath expr="//div[hasclass('o_wsale_product_image')]" position="inside">
+            <div class="trading-badges position-absolute" style="top: 8px; left: 8px; z-index: 2;">
+                <span class="badge bg-success" t-if="product.website_published">
+                    <i class="fa fa-circle me-1" style="font-size: 0.6em;"></i>Live
+                </span>
+                <span class="badge bg-warning" t-if="not product.website_published">
+                    <i class="fa fa-clock me-1"></i>Soon
+                </span>
+            </div>
+        </xpath>
+
+        <!-- Enhanced product information -->
+        <xpath expr="//div[hasclass('o_wsale_product_information')]" position="replace">
+            <div class="o_wsale_product_information p-3">
+                <!-- Category badge -->
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <span class="badge bg-light text-primary text-uppercase small" t-field="product.categ_id.name"/>
+                    <div class="product-rating">
+                        <t t-foreach="range(5)" t-as="star">
+                            <i class="fa fa-star text-warning"></i>
+                        </t>
+                    </div>
+                </div>
+
+                <!-- Product name -->
+                <h6 class="card-title mb-2">
+                    <a t-attf-href="/shop/product/#{ slug(product) }" class="text-decoration-none text-dark">
+                        <span t-field="product.name"/>
+                    </a>
+                </h6>
+
+                <!-- Trading specs -->
+                <div class="trading-specs small text-muted mb-3">
+                    <div class="row">
+                        <div class="col-6">
+                            <div>
+                                <strong>Spread:</strong> 0.1</div>
+                            <div>
+                                <strong>Leverage:</strong> 1:500</div>
+                        </div>
+                        <div class="col-6">
+                            <div>
+                                <strong>Min:</strong> 0.01</div>
+                            <div>
+                                <strong>Hours:</strong> 24/5</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Price and action -->
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="price-info">
+                        <span class="h6 text-primary mb-0" t-field="product.list_price" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                        <div class="small text-muted">per month</div>
+                    </div>
+                    <div class="product-actions">
+                        <a t-attf-href="/shop/product/#{ slug(product) }" class="btn btn-primary btn-sm">
+                            <i class="fa fa-chart-line me-1"></i>Trade
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+</odoo>
